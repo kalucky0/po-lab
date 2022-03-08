@@ -5,11 +5,23 @@ namespace po_lab {
         private const decimal EUR_RATE = 4.5m;
         private const decimal PLN_RATE = 1m;
 
+        /// <summary>
+        /// Method that returns a percentage of money
+        /// </summary>
+        /// <param name="money">Money to calculate percentage of</param>
+        /// <param name="percent">Percentage to calculate</param>
+        /// <returns>The percentage of money</returns>
         public static Money Percent(this Money money, decimal percent)
         {
             return Money.Of(money.Value * percent / 100m, money.Currency) ?? throw new ArgumentException();
         }
 
+        /// <summary>
+        /// Method that converts money to another currency
+        /// </summary>
+        /// <param name="money">Money to convert</param>
+        /// <param name="currency">Currency to convert to</param>
+        /// <returns>Converted money</returns>
         public static Money ToCurrency(this Money money, Currency currency)
         {
             if (money.Currency == currency)
