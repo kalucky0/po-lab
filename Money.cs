@@ -10,6 +10,11 @@ namespace po_lab
     {
         private readonly decimal _value;
         private readonly Currency _currency;
+
+        public decimal Value { 
+            get { return _value; }
+        }
+
         private Money(decimal value, Currency currency)
         {
             _value = value;
@@ -18,8 +23,120 @@ namespace po_lab
 
         public bool Equals(Money? other)
         {
-            if (ReferenceEquals(this, other)) return true;
-            return false;
+            if (other == null)
+                return false;
+
+            return _value == other._value && _currency == other._currency;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Money);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode() ^ _currency.GetHashCode();
+        }
+
+        public static Money operator +(Money a, Money b)
+        {
+            if (a._currency != b._currency)
+                throw new InvalidOperationException("Different currencies");
+
+            return new Money(a.Value + b.Value, a._currency);
+        }
+
+        public static Money operator -(Money a, Money b)
+        {
+            if (a._currency != b._currency)
+                throw new InvalidOperationException("Different currencies");
+
+            return new Money(a.Value - b.Value, a._currency);
+        }
+
+        public static Money operator *(Money a, decimal b)
+        {
+            return new Money(a.Value * b, a._currency);
+        }
+
+        public static Money operator *(decimal a, Money b)
+        {
+            return new Money(a * b.Value, b._currency);
+        }
+
+        public static Money operator /(Money a, decimal b)
+        {
+            return new Money(a.Value / b, a._currency);
+        }
+
+        public static Money operator /(decimal a, Money b)
+        {
+            return new Money(a / b.Value, b._currency);
+        }
+
+        public static bool operator ==(Money? a, Money? b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, null)) return false;
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Money a, Money b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator >(Money a, Money b)
+        {
+            if (a._currency != b._currency)
+                throw new InvalidOperationException("Different currencies");
+
+            return a.Value > b.Value;
+        }
+
+        public static bool operator <(Money a, Money b)
+        {
+            if (a._currency != b._currency)
+                throw new InvalidOperationException("Different currencies");
+
+            return a.Value < b.Value;
+        }
+
+        public static bool operator >=(Money a, Money b)
+        {
+            if (a._currency != b._currency)
+                throw new InvalidOperationException("Different currencies");
+
+            return a.Value >= b.Value;
+        }
+
+        public static bool operator <=(Money a, Money b)
+        {
+            if (a._currency != b._currency)
+                throw new InvalidOperationException("Different currencies");
+
+            return a.Value <= b.Value;
+        }
+
+        public static implicit operator Money(decimal value)
+        {
+            return new Money(value, Currency.PLN);
+        }
+
+        public static implicit operator decimal(Money value)
+        {
+            return value.Value;
+        }
+
+        public static explicit operator float(Money value)
+        {
+            return (float) value.Value;
+        }
+
+        public override string ToString()
+        {
+            return $"{_value} {_currency}";
         }
 
         public static Money? Of(decimal value, Currency currency)
