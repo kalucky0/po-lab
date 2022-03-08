@@ -8,18 +8,18 @@ namespace po_lab
 {
     public class PersonProperties
     {
-        private string firstName;
+        private string? _firstName;
         public string FirstName
         {
             get
             {
-                return firstName;
+                return _firstName ?? "";
             }
             set
             {
                 if (value.Length >= 2)
                 {
-                    firstName = value;
+                    _firstName = value;
                 }
             }
         }
