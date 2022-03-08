@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace po_lab
+﻿namespace po_lab
 {
     public class Money : IEquatable<Money>
     {
@@ -39,19 +33,21 @@ namespace po_lab
             return _value.GetHashCode() ^ _currency.GetHashCode();
         }
 
-        public static Money operator +(Money a, Money b)
+        private static void ThrowOnDiffCurrencies(Money a, Money b)
         {
             if (a._currency != b._currency)
-                throw new InvalidOperationException("Different currencies");
+                throw new InvalidOperationException("Cannot add different currencies");
+        }
 
+        public static Money operator +(Money a, Money b)
+        {
+            ThrowOnDiffCurrencies(a, b);
             return new Money(a.Value + b.Value, a._currency);
         }
 
         public static Money operator -(Money a, Money b)
         {
-            if (a._currency != b._currency)
-                throw new InvalidOperationException("Different currencies");
-
+            ThrowOnDiffCurrencies(a, b);
             return new Money(a.Value - b.Value, a._currency);
         }
 
@@ -89,33 +85,25 @@ namespace po_lab
 
         public static bool operator >(Money a, Money b)
         {
-            if (a._currency != b._currency)
-                throw new InvalidOperationException("Different currencies");
-
+            ThrowOnDiffCurrencies(a, b);
             return a.Value > b.Value;
         }
 
         public static bool operator <(Money a, Money b)
         {
-            if (a._currency != b._currency)
-                throw new InvalidOperationException("Different currencies");
-
+            ThrowOnDiffCurrencies(a, b);
             return a.Value < b.Value;
         }
 
         public static bool operator >=(Money a, Money b)
         {
-            if (a._currency != b._currency)
-                throw new InvalidOperationException("Different currencies");
-
+            ThrowOnDiffCurrencies(a, b);
             return a.Value >= b.Value;
         }
 
         public static bool operator <=(Money a, Money b)
         {
-            if (a._currency != b._currency)
-                throw new InvalidOperationException("Different currencies");
-
+            ThrowOnDiffCurrencies(a, b);
             return a.Value <= b.Value;
         }
 
