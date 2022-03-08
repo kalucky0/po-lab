@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace po_lab
+﻿namespace po_lab
 {
     public class Program {
         public static void Main(string[] args) {
