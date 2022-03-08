@@ -9,6 +9,10 @@
             get { return _value; }
         }
 
+        public Currency Currency {
+            get { return _currency; }
+        }
+
         private Money(decimal value, Currency currency)
         {
             _value = value;

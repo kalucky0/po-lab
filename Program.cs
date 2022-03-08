@@ -26,6 +26,9 @@
 
             Array.Sort(bank);
             bank.ToList().ForEach(e => Console.WriteLine(e + " "));
+
+            var money3 = Money.Of(100, Currency.PLN)!;
+            Console.WriteLine(money3.Percent(23.3m));
         }
     }
 }
