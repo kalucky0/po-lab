@@ -1,6 +1,6 @@
 ﻿namespace po_lab
 {
-    public class Money : IEquatable<Money>
+    public class Money : IEquatable<Money>, IComparable<Money>
     {
         private readonly decimal _value;
         private readonly Currency _currency;
@@ -17,15 +17,26 @@
 
         public bool Equals(Money? other)
         {
-            if (other == null)
-                return false;
-
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
             return _value == other._value && _currency == other._currency;
         }
 
         public override bool Equals(object? obj)
         {
-            return Equals(obj as Money);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Money) obj);
+        }
+
+        public int CompareTo(Money? other)
+        {
+            if (ReferenceEquals(null, other)) return 1;
+            if (ReferenceEquals(this, other)) return 0;
+            var currencyComparison = _currency.CompareTo(other._currency);
+            if (currencyComparison != 0) return currencyComparison;
+            return _value.CompareTo(other._value);
         }
 
         public override int GetHashCode()
@@ -73,14 +84,12 @@
 
         public static bool operator ==(Money? a, Money? b)
         {
-            if (ReferenceEquals(a, b)) return true;
-            if (ReferenceEquals(a, null)) return false;
-            return a.Equals(b);
+            return Equals(a, b);
         }
 
         public static bool operator !=(Money a, Money b)
         {
-            return !(a == b);
+            return !Equals(a, b);
         }
 
         public static bool operator >(Money a, Money b)

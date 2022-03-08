@@ -16,6 +16,16 @@
             Console.WriteLine(2 * money);
             Console.WriteLine(money / 2);
             Console.WriteLine(2 / money);
+
+            Money[] bank = {
+                Money.Of(100, Currency.PLN)!,
+                Money.Of(10, Currency.USD)!,
+                Money.Of(20, Currency.EUR)!,
+                Money.Of(30, Currency.PLN)!,
+            };
+
+            Array.Sort(bank);
+            bank.ToList().ForEach(e => Console.WriteLine(e + " "));
         }
     }
 }
