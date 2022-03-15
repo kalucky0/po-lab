@@ -69,7 +69,7 @@ namespace po_lab2
             Console.WriteLine($"Liczba latających i pływających: {flySwimCounter}");
 
             Aggregate aggregate = new ArrayIntAggregate();
-            for (var iterator = aggregate.CreateReversedIterator(); iterator.HasNext();)
+            for (var iterator = aggregate.CreateDivisibleIterator(2); iterator.HasNext();)
             {
                 Console.WriteLine(iterator.GetNext());
             }
