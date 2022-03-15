@@ -1,20 +1,22 @@
 ﻿namespace po_lab2
 {
-    public sealed class ArrayIntIterator : Iterator
+    public sealed class ArrayIntReversedIterator : Iterator
     {
         private int _index = 0;
         private ArrayIntAggregate _aggregate;
-        public ArrayIntIterator(ArrayIntAggregate aggregate)
+        public ArrayIntReversedIterator(ArrayIntAggregate aggregate)
         {
             _aggregate = aggregate;
+            _index = _aggregate.array.Length - 1;
         }
         public int GetNext()
         {
-            return _aggregate.array[_index++];
+            return _aggregate.array[_index--];
         }
+
         public bool HasNext()
         {
-            return _index < _aggregate.array.Length;
+            return _index >= 0;
         }
     }
 }
