@@ -29,9 +29,7 @@ namespace po_lab2
                     Console.WriteLine("Czy rower ma kierowcę: " + bicycle.isDriver);
                 }
                 if (vehicle is Car)
-                {
                     carCounter++;
-                }
             }
             Console.WriteLine($"Liczba rowerów: {bicycleCounter}, liczba samochodów: {carCounter}");
 
@@ -53,6 +51,22 @@ namespace po_lab2
                     hydroplane.Land();
                 }
             }
+
+            Flyable[] flyables =
+            {
+                new Wasp(),
+                new Hydroplane(),
+                new Duck(),
+            };
+
+            int flySwimCounter = 0;
+            foreach (var flyable in flyables)
+            {
+                if (flyable is Flyable && flyable is Swimmingable)
+                    flySwimCounter++;
+            }
+
+            Console.WriteLine($"Liczba latających i pływających: {flySwimCounter}");
         }
     }
 }
