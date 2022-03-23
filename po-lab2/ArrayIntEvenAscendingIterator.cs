@@ -7,16 +7,21 @@
         public ArrayIntEvenAscendingIterator(ArrayIntAggregate aggregate)
         {
             _aggregate = aggregate;
+            var even = Array.FindAll(_aggregate.array, (e) => e % 2 == 0);
+            var odd = Array.FindAll(_aggregate.array, (e) => e % 2 != 0);
+            Array.Sort(even, odd);
+            Array.Reverse(odd);
+
+            _aggregate.array = even.Concat(odd).ToArray();
         }
-        // TODO: Implement GetNext()
+
         public int GetNext()
         {
-            throw new System.NotImplementedException();
+            return _aggregate.array[_index++];
         }
-        // TODO: Implement HasNext()
         public bool HasNext()
         {
-            throw new System.NotImplementedException();
+            return _index < _aggregate.array.Length;
         }
     }
 }
