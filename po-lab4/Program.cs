@@ -1,24 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 class App
 {
     public static void Main(string[] args)
     {
-        (int, int) point1 = (2, 4);
-        Direction4 dir = Direction4.UP;
-        var point2 = Exercise1.NextPoint(dir, point1, (1920, 1080));
-        Console.WriteLine(point2);
-
-        int[,] screen =
-        {
-            {1, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0}
-        };
-        (int, int) point = (1, 1);
-        Direction8 direction = Exercise2.DirectionTo(screen, point, 1);
-        Console.WriteLine(direction);
     }
 }
 
@@ -129,29 +114,31 @@ class Exercise2
             }
         }
 
-        if (valueX < x)
-        {
-            if (valueY < y)
-            {
-                return Direction8.UP_LEFT;
-            }
-            else
-            {
-                return Direction8.DOWN_LEFT;
-            }
-        }
-        else
-        {
-            if (valueY < y)
-            {
-                return Direction8.UP_RIGHT;
-            }
-            else
-            {
-                return Direction8.DOWN_RIGHT;
-            }
-        }
-  
+        if (valueX < x && valueY == y)
+            return Direction8.LEFT;
+
+        if (valueX > x && valueY == y)
+            return Direction8.RIGHT;
+
+        if (valueX == x && valueY < y)
+            return Direction8.UP;
+
+        if (valueX == x && valueY > y)
+            return Direction8.DOWN;
+
+        if (valueX < x && valueY < y)
+            return Direction8.UP_LEFT;
+
+        if (valueX > x && valueY < y)
+            return Direction8.UP_RIGHT;
+
+        if (valueX < x && valueY > y)
+            return Direction8.DOWN_LEFT;
+
+        if (valueX > x && valueY > y)
+            return Direction8.DOWN_RIGHT;
+
+        return Direction8.UP;
     }
 }
 
@@ -200,8 +187,7 @@ class Exercise4
 {
     public static void AssignStudentId(Student[] students)
     {
-        foreach (var student in students)
-        {
-        }
+        for (int i = 0; i < students.Length; i++)
+            students[i] = new Student(students[i].LastName, students[i].FirstName, students[i].Group, $"{students[i].Group}{i + 1:000}");
     }
 }
