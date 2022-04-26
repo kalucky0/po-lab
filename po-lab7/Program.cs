@@ -1,4 +1,7 @@
-﻿delegate String IntFormatter(int a);
+﻿using System;
+using System.Collections.Generic;
+
+delegate String IntFormatter(int a);
 
 delegate double operation(double a, double b);
 
@@ -31,23 +34,25 @@ class Program
             {
                 Console.WriteLine("Zadanie 2: 1");
                 points++;
-            } else
+            }
+            else
             {
                 Console.WriteLine("Zadanie 2: 0");
             }
-        } 
+        }
         catch (NotImplementedException e)
         {
             Console.WriteLine("Zadanie 2: 0");
         }
         try
         {
-            double result = Calculate(delegate(double a, double b) { return a * b;}, 2, 4);
+            double result = Calculate(delegate (double a, double b) { return a * b; }, 2, 4);
             if (result == 8)
             {
                 Console.WriteLine("Zadanie 3: 1");
                 points++;
-            } else
+            }
+            else
             {
                 Console.WriteLine("Zadanie 3: 0");
             }
@@ -82,7 +87,7 @@ class Program
             }
             else
             {
-                Console.WriteLine("Zadanie 5: 0");    
+                Console.WriteLine("Zadanie 5: 0");
             }
         }
         catch (NotImplementedException e)
@@ -133,7 +138,7 @@ class Program
                 "83935 0"
 
             };
-            if (ProcessPeople(data) != null && ProcessPeople(data).Contains(new Person("123456789", 90)) 
+            if (ProcessPeople(data) != null && ProcessPeople(data).Contains(new Person("123456789", 90))
                 && ProcessPeople(data).Contains(new Person("272899987", 87))
                 )
             {
@@ -152,7 +157,7 @@ class Program
         try
         {
             Messenger messenger = new Messenger();
-            
+
             if (MessangerSubsciber(messenger, "") != null && MessangerSubsciber(messenger, "Test").Equals("Test"))
             {
                 Console.WriteLine("Zadanie 9: 1");
@@ -160,65 +165,69 @@ class Program
             }
             else
             {
-                Console.WriteLine("Zadanie 9: 0");    
+                Console.WriteLine("Zadanie 9: 0");
             }
         }
         catch (NotImplementedException e)
         {
             Console.WriteLine("Zadanie 9: 0");
         }
-        
+
         Console.WriteLine("Suma punktów: " + points);
     }
-    
+
     //Zadanie 1 
     //w metodzie uzupełnij ciało delegata, aby zwracał łańcuch z liczbą `value` zapisaną w kodzie szesnastkowym
     //np. dla value 10 powinien zwrócić "A"
     public static IntFormatter HexFormatter()
     {
-        return delegate(int value)
+        return delegate (int value)
         {
-            //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-            throw new NotImplementedException();  
+            return value.ToString("X");
         };
     }
     //Zadanie 2
     //zwróć delegata typu operation, który dodaje oba argumenty 
     public static operation AddOperation()
     {
-        //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-        throw new NotImplementedException();
+        return delegate (double a, double b)
+        {
+            return a + b;
+        };
     }
 
     //Zadanie 3
     //wywołaj przekazanego delegata op z parametrami a i b, a wynik delegata zwróć jako wartość metody Calculate
     public static double Calculate(operation op, double a, double b)
     {
-        //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-        throw new NotImplementedException();
+        return op.Invoke(a, b);
     }
-    
+
     //Zadanie 4
     //Zwróć wartość delegata typu Func, który zwraca powtórzony łańcuch (pierwszy argument) n razy (drugi argument) 
-    public static Func<string, int ,string> Repeat()
+    public static Func<string, int, string> Repeat()
     {
-        //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-        throw new NotImplementedException();
+        return delegate (string s, int n)
+        {
+            string result = "";
+            for (int i = 0; i < n; i++)
+                result += s;
+            return result;
+        };
     }
 
     //Zadanie 5
     //zwroć w metodzie lambdę, która wyświetla na konsoli przekazany łańcuch wielkimi literami
     public static Action<string> StringConsumer()
     {
-        //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-        throw new NotImplementedException();
+        return s => Console.WriteLine(s.ToUpper());
     }
+
     //Zadanie 6
     //zwroć w metodzie lambdę, która zwraca argument podniesiony do kwadratu
     public static Func<double, double> DoubleFunction()
     {
-        //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-        throw new NotImplementedException();
+        return a => Math.Pow(a, 2);
     }
     //Zadanie 7
     //zwróć w metodzie lambdę, która zwraca prawdę, jeśli argument jest poprawnym numerem telefonu:
@@ -226,8 +235,15 @@ class Program
     //- każdy znak jest cyfrą
     public static Predicate<string> IsPhoneNumber()
     {
-        //usuń zgłoszenie wyjątku i wpisz rozwiązanie
-        throw new NotImplementedException();
+        return s =>
+        {
+            if (s.Length != 9)
+                return false;
+            foreach (char c in s)
+                if (!char.IsDigit(c))
+                    return false;
+            return true;
+        };
     }
     public static List<Person> LoadPeople(List<String> RawData, Predicate<string> validator)
     {
@@ -244,7 +260,7 @@ class Program
         }
         return list;
     }
-    
+
     //Zadanie 8
     //Podaj w miejscu null lambdę predykatu, która validuje argument wejsciowy w postaci łańcucha
     //łańcuch składa się z dwóch części oddzielonych spacją
@@ -253,21 +269,36 @@ class Program
     //jeśli obie części zawierają poprawne dane to predykat zwarac true
     public static List<Person> ProcessPeople(List<String> data)
     {
-        return LoadPeople(data, null);
+        return LoadPeople(data, s =>
+        {
+            string[] tokens = s.Split(" ");
+            string phone = tokens[0];
+            string ects = tokens[1];
+            if (phone.Length != 9)
+                return false;
+            foreach (char c in phone)
+                if (!char.IsDigit(c))
+                    return false;
+            if (int.Parse(ects) < 0)
+                return false;
+            return true;
+        });
     }
-    
+
     //Zadanie 9
     //Zdefiniuj słuchacza klasy Messanger w postaci lambdy, który po odbiorze wiadomości przypisze ją do zmiennej lokalnej receivedMessage
     public static string MessangerSubsciber(Messenger messenger, String message)
     {
         string receivedMessage = null;
         //poniżej wpisz lambdę, która jest subskrybentem obiektu messanger
+
+        messenger.BrodcastMessage += (sender, msg) => receivedMessage = msg;
+
         messenger.SendToAll(message);
         return receivedMessage;
     }
 }
 record Person(string Phone, int Ects);
-
 
 class Messenger
 {
@@ -283,5 +314,3 @@ class Messenger
         OnBroadcast(message);
     }
 }
-
-
